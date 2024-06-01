@@ -68,22 +68,28 @@
     <script>
         const repo = 'donheekang/Im'; // GitHub 리포지토리 경로
         const path = 'im.xlsx'; // 엑셀 파일 경로
-        const token = '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'; // GitHub Personal Access Token
+        const token = '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'; // GitHub Personal Access Token
 
         async function fetchExcelFromGithub() {
             const url = `https://api.github.com/repos/${repo}/contents/${path}`;
             try {
                 const response = await fetch(url, {
                     headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3.raw'
+                        'Authorization': `token ${token}`
                     }
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const arrayBuffer = await response.arrayBuffer();
-                return arrayBuffer;
+                const data = await response.json();
+                document.getElementById('log').textContent = `API call successful: ${data.name}`;
+                const fileContent = atob(data.content);
+                const byteArray = new Uint8Array(fileContent.length);
+                for (let i = 0; i < fileContent.length; i++) {
+                    byteArray[i] = fileContent.charCodeAt(i);
+                }
+                document.getElementById('log').textContent += '\nFile content decoded successfully';
+                return byteArray.buffer;
             } catch (error) {
                 document.getElementById('log').textContent = `Error: ${error.message}`;
                 throw error;
