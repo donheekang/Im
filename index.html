@@ -16,7 +16,7 @@
             color: #333;
         }
         .container {
-            max-width: 1200px; /* 더 넓은 가로 크기 */
+            max-width: 100%; /* 화면에 맞게 최대 너비 설정 */
             margin: auto;
             background: white;
             padding: 20px;
@@ -51,17 +51,17 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: auto;
         }
         th, td {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
+            font-size: 12px; /* 기본 글자 크기 */
         }
         th {
             background-color: #f4f4f9;
         }
-        td:first-child, th:first-child {
+        th, td:first-child {
             position: sticky;
             left: 0;
             background-color: #f4f4f9;
