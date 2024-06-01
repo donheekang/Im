@@ -16,12 +16,13 @@
             color: #333;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px; /* 더 넓은 가로 크기 */
             margin: auto;
             background: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto; /* 가로 스크롤바 추가 */
         }
         input[type="text"] {
             width: calc(100% - 22px);
@@ -45,6 +46,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
         th, td {
             border: 1px solid #ccc;
@@ -130,7 +132,7 @@
                 const csvContent = await fetchCSV();
                 const dataArray = csvToArray(csvContent);
                 const headers = dataArray[0];
-                const results = dataArray.slice(1).filter(row => row[0] && row[0].toLowerCase().includes(searchQuery));
+                const results = dataArray.slice(1).filter(row => row.some(cell => cell && cell.toLowerCase().includes(searchQuery)));
                 const resultsWithHeaders = [headers, ...results];
                 const resultsTable = arrayToTable(resultsWithHeaders);
                 const resultsContainer = document.getElementById('results');
