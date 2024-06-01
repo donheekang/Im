@@ -91,8 +91,10 @@
                 const searchQuery = document.getElementById('searchQuery').value.toLowerCase();
                 const csvContent = await fetchCSV();
                 const dataArray = csvToArray(csvContent);
-                const results = dataArray.filter(row => row[0] && row[0].toLowerCase().includes(searchQuery));
-                document.getElementById('results').textContent = JSON.stringify(results, null, 2);
+                const headers = dataArray[0]; // 첫 번째 행을 헤더로 설정
+                const results = dataArray.slice(1).filter(row => row[0] && row[0].toLowerCase().includes(searchQuery));
+                const resultsWithHeaders = [headers, ...results];
+                document.getElementById('results').textContent = JSON.stringify(resultsWithHeaders, null, 2);
                 document.getElementById('log').textContent += '\nSearch completed';
             } catch (error) {
                 document.getElementById('log').textContent = `Error: ${error.message}`;
