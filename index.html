@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel File Search</title>
+    <title>Excel File Search from GitHub</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
     <style>
         body {
@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-    <h1>Excel File Search</h1>
+    <h1>Excel File Search from GitHub</h1>
     <div class="container">
         <input type="text" id="searchQuery" placeholder="Enter search term">
         <button onclick="searchExcel()">Search</button>
@@ -82,13 +82,11 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                document.getElementById('log').textContent = `API call successful: ${data.name}`;
                 const fileContent = atob(data.content);
                 const byteArray = new Uint8Array(fileContent.length);
                 for (let i = 0; i < fileContent.length; i++) {
                     byteArray[i] = fileContent.charCodeAt(i);
                 }
-                document.getElementById('log').textContent += '\nFile content decoded successfully';
                 return byteArray.buffer;
             } catch (error) {
                 document.getElementById('log').textContent = `Error: ${error.message}`;
