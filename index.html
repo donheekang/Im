@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel File Search from GitHub</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <title>CSV File Search from GitHub</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,53 +56,50 @@
     </style>
 </head>
 <body>
-    <h1>Excel File Search from GitHub</h1>
+    <h1>CSV File Search from GitHub</h1>
     <div class="container">
         <input type="text" id="searchQuery" placeholder="Enter search term">
-        <button onclick="searchExcel()">Search</button>
+        <button onclick="searchCSV()">Search</button>
         <pre id="results"></pre>
         <pre id="log" class="log"></pre>
     </div>
 
     <script>
         const repo = 'donheekang/Im'; // GitHub 리포지토리 경로
-        const path = 'im.xlsx'; // 엑셀 파일 경로
+        const path = 'im.csv'; // CSV 파일 경로
         const token = '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'; // GitHub Personal Access Token
 
-        async function fetchExcelFromGithub() {
+        async function fetchCSVFromGithub() {
             const url = `https://api.github.com/repos/${repo}/contents/${path}`;
             try {
                 const response = await fetch(url, {
                     headers: {
-                        'Authorization': `token ${token}`
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3.raw'
                     }
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const data = await response.json();
-                const fileContent = atob(data.content);
-                const byteArray = new Uint8Array(fileContent.length);
-                for (let i = 0; i < fileContent.length; i++) {
-                    byteArray[i] = fileContent.charCodeAt(i);
-                }
-                return byteArray.buffer;
+                const csvContent = await response.text();
+                return csvContent;
             } catch (error) {
                 document.getElementById('log').textContent = `Error: ${error.message}`;
                 throw error;
             }
         }
 
-        async function searchExcel() {
+        function csvToArray(csv) {
+            const rows = csv.split('\n').map(row => row.split(','));
+            return rows;
+        }
+
+        async function searchCSV() {
             try {
                 const searchQuery = document.getElementById('searchQuery').value.toLowerCase();
-                const arrayBuffer = await fetchExcelFromGithub();
-                const workbook = XLSX.read(arrayBuffer, {type: 'array'});
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-                const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-                const results = json.filter(row => row[0] && row[0].toString().toLowerCase().includes(searchQuery));
+                const csvContent = await fetchCSVFromGithub();
+                const dataArray = csvToArray(csvContent);
+                const results = dataArray.filter(row => row[0] && row[0].toLowerCase().includes(searchQuery));
                 document.getElementById('results').textContent = JSON.stringify(results, null, 2);
                 document.getElementById('log').textContent += '\nSearch completed';
             } catch (error) {
