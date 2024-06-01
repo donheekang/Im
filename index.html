@@ -16,7 +16,7 @@
             color: #333;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
             background: white;
             padding: 20px;
@@ -42,13 +42,27 @@
         button:hover {
             background-color: #0056b3;
         }
-        pre {
-            background: #f8f8f8;
-            padding: 10px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
             border: 1px solid #ccc;
-            border-radius: 4px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f9;
+            position: -webkit-sticky; /* for Safari */
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+        td:first-child {
+            background-color: #f4f4f9;
+            position: -webkit-sticky; /* for Safari */
+            position: sticky;
+            left: 0;
         }
         .log {
             color: red;
@@ -60,7 +74,7 @@
     <div class="container">
         <input type="text" id="searchQuery" placeholder="Enter search term">
         <button onclick="searchCSV()">Search</button>
-        <pre id="results"></pre>
+        <table id="results"></table>
         <pre id="log" class="log"></pre>
     </div>
 
@@ -86,15 +100,42 @@
             return rows;
         }
 
+        function arrayToTable(arr) {
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            arr.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement(index === 0 ? 'th' : 'td');
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                if (index === 0) {
+                    thead.appendChild(tr);
+                } else {
+                    tbody.appendChild(tr);
+                }
+            });
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            return table;
+        }
+
         async function searchCSV() {
             try {
                 const searchQuery = document.getElementById('searchQuery').value.toLowerCase();
                 const csvContent = await fetchCSV();
                 const dataArray = csvToArray(csvContent);
-                const headers = dataArray[0]; // 첫 번째 행을 헤더로 설정
+                const headers = dataArray[0];
                 const results = dataArray.slice(1).filter(row => row[0] && row[0].toLowerCase().includes(searchQuery));
                 const resultsWithHeaders = [headers, ...results];
-                document.getElementById('results').textContent = JSON.stringify(resultsWithHeaders, null, 2);
+                const resultsTable = arrayToTable(resultsWithHeaders);
+                const resultsContainer = document.getElementById('results');
+                resultsContainer.innerHTML = '';
+                resultsContainer.appendChild(resultsTable);
                 document.getElementById('log').textContent += '\nSearch completed';
             } catch (error) {
                 document.getElementById('log').textContent = `Error: ${error.message}`;
