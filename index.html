@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
             color: #333;
         }
         .container {
-            max-width: 1600px; /* 더 넓은 가로 크기 */
+            max-width: 1200px; /* 적절한 가로 크기 */
             margin: auto;
             background: white;
             padding: 20px;
@@ -56,10 +56,10 @@
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
-            min-width: 100px; /* 모든 셀의 최소 너비를 동일하게 설정 */
+            font-size: 12px; /* 기본 글자 크기 */
         }
         th, td {
-            font-size: 12px; /* 모든 셀의 글자 크기 */
+            min-width: 100px; /* 모든 셀의 최소 너비를 동일하게 설정 */
         }
         th {
             background-color: #f4f4f9;
@@ -71,7 +71,7 @@
             z-index: 1;
         }
         td[data-column="Co"] {
-            font-size: 10px; /* Co 열의 글자 크기를 작게 설정 */
+            font-size: 5px; /* Co 열의 글자 크기를 작게 설정 */
         }
         .log {
             color: red;
