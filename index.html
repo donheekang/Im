@@ -75,21 +75,15 @@
             try {
                 const response = await fetch(url, {
                     headers: {
-                        'Authorization': `token ${token}`
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3.raw'
                     }
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const data = await response.json();
-                document.getElementById('log').textContent = `API call successful: ${data.name}`;
-                const fileContent = atob(data.content);
-                const byteArray = new Uint8Array(fileContent.length);
-                for (let i = 0; i < fileContent.length; i++) {
-                    byteArray[i] = fileContent.charCodeAt(i);
-                }
-                document.getElementById('log').textContent += '\nFile content decoded successfully';
-                return byteArray.buffer;
+                const arrayBuffer = await response.arrayBuffer();
+                return arrayBuffer;
             } catch (error) {
                 document.getElementById('log').textContent = `Error: ${error.message}`;
                 throw error;
