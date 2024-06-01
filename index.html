@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV File Search from GitHub</title>
+    <title>CSV File Search from GitHub Pages</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,7 +56,7 @@
     </style>
 </head>
 <body>
-    <h1>CSV File Search from GitHub</h1>
+    <h1>CSV File Search from GitHub Pages</h1>
     <div class="container">
         <input type="text" id="searchQuery" placeholder="Enter search term">
         <button onclick="searchCSV()">Search</button>
@@ -65,19 +65,11 @@
     </div>
 
     <script>
-        const repo = 'donheekang/Im'; // GitHub 리포지토리 경로
-        const path = 'im.csv'; // CSV 파일 경로
-        const token = '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'; // GitHub Personal Access Token
+        const csvFileUrl = 'https://donheekang.github.io/Im/im.csv'; // CSV 파일 URL
 
-        async function fetchCSVFromGithub() {
-            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+        async function fetchCSV() {
             try {
-                const response = await fetch(url, {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3.raw'
-                    }
-                });
+                const response = await fetch(csvFileUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -97,7 +89,7 @@
         async function searchCSV() {
             try {
                 const searchQuery = document.getElementById('searchQuery').value.toLowerCase();
-                const csvContent = await fetchCSVFromGithub();
+                const csvContent = await fetchCSV();
                 const dataArray = csvToArray(csvContent);
                 const results = dataArray.filter(row => row[0] && row[0].toLowerCase().includes(searchQuery));
                 document.getElementById('results').textContent = JSON.stringify(results, null, 2);
