@@ -43,6 +43,11 @@
         button:hover {
             background-color: #0056b3;
         }
+        .table-container {
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -55,16 +60,12 @@
         }
         th {
             background-color: #f4f4f9;
-            position: -webkit-sticky; /* for Safari */
-            position: sticky;
-            left: 0;
-            z-index: 1;
         }
-        td:first-child {
-            background-color: #f4f4f9;
-            position: -webkit-sticky; /* for Safari */
+        td:first-child, th:first-child {
             position: sticky;
             left: 0;
+            background-color: #f4f4f9;
+            z-index: 1;
         }
         .log {
             color: red;
@@ -76,7 +77,9 @@
     <div class="container">
         <input type="text" id="searchQuery" placeholder="Enter search term">
         <button onclick="searchCSV()">Search</button>
-        <table id="results"></table>
+        <div class="table-container">
+            <table id="results"></table>
+        </div>
         <pre id="log" class="log"></pre>
     </div>
 
@@ -109,7 +112,7 @@
 
             arr.forEach((row, index) => {
                 const tr = document.createElement('tr');
-                row.forEach(cell => {
+                row.forEach((cell, cellIndex) => {
                     const td = document.createElement(index === 0 ? 'th' : 'td');
                     td.textContent = cell;
                     tr.appendChild(td);
