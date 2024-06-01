@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
             color: #333;
         }
         .container {
-            max-width: 1200px; /* 적절한 가로 크기 */
+            max-width: 1200px; /* 더 넓은 가로 크기 */
             margin: auto;
             background: white;
             padding: 20px;
@@ -51,15 +51,12 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: auto;
         }
         th, td {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
-            font-size: 12px; /* 기본 글자 크기 */
-        }
-        th, td {
-            min-width: 100px; /* 모든 셀의 최소 너비를 동일하게 설정 */
         }
         th {
             background-color: #f4f4f9;
@@ -69,9 +66,6 @@
             left: 0;
             background-color: #f4f4f9;
             z-index: 1;
-        }
-        td[data-column="Co"] {
-            font-size: 5px; /* Co 열의 글자 크기를 작게 설정 */
         }
         .log {
             color: red;
@@ -121,9 +115,6 @@
                 row.forEach((cell, cellIndex) => {
                     const td = document.createElement(index === 0 ? 'th' : 'td');
                     td.textContent = cell;
-                    if (index !== 0 && arr[0][cellIndex] === "Co") {
-                        td.setAttribute('data-column', 'Co');
-                    }
                     tr.appendChild(td);
                 });
                 if (index === 0) {
