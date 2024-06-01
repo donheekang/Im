@@ -16,7 +16,7 @@
             color: #333;
         }
         .container {
-            max-width: 1200px; /* 더 넓은 가로 크기 */
+            max-width: 1600px; /* 더 넓은 가로 크기 */
             margin: auto;
             background: white;
             padding: 20px;
@@ -51,12 +51,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: auto;
+            table-layout: fixed; /* 고정된 테이블 레이아웃 */
         }
         th, td {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
+            min-width: 120px; /* 최소 너비를 지정하여 더 넓게 */
         }
         th {
             background-color: #f4f4f9;
