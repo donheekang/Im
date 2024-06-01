@@ -56,9 +56,10 @@
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
+            min-width: 100px; /* 모든 셀의 최소 너비를 동일하게 설정 */
         }
         th, td {
-            min-width: 100px; /* 모든 셀의 최소 너비를 동일하게 설정 */
+            font-size: 12px; /* 모든 셀의 글자 크기 */
         }
         th {
             background-color: #f4f4f9;
@@ -68,6 +69,9 @@
             left: 0;
             background-color: #f4f4f9;
             z-index: 1;
+        }
+        td[data-column="Co"] {
+            font-size: 10px; /* Co 열의 글자 크기를 작게 설정 */
         }
         .log {
             color: red;
@@ -114,9 +118,12 @@
 
             arr.forEach((row, index) => {
                 const tr = document.createElement('tr');
-                row.forEach(cell => {
+                row.forEach((cell, cellIndex) => {
                     const td = document.createElement(index === 0 ? 'th' : 'td');
                     td.textContent = cell;
+                    if (index !== 0 && arr[0][cellIndex] === "Co") {
+                        td.setAttribute('data-column', 'Co');
+                    }
                     tr.appendChild(td);
                 });
                 if (index === 0) {
