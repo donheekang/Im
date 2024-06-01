@@ -51,14 +51,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed; /* 고정된 테이블 레이아웃 */
         }
         th, td {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: left;
-        }
-        th, td {
-            min-width: 120px; /* 모든 셀의 최소 너비를 동일하게 설정 */
+            min-width: 120px; /* 최소 너비를 지정하여 더 넓게 */
         }
         th {
             background-color: #f4f4f9;
@@ -114,7 +113,7 @@
 
             arr.forEach((row, index) => {
                 const tr = document.createElement('tr');
-                row.forEach(cell => {
+                row.forEach((cell, cellIndex) => {
                     const td = document.createElement(index === 0 ? 'th' : 'td');
                     td.textContent = cell;
                     tr.appendChild(td);
