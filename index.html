@@ -130,8 +130,16 @@
         }
 
         async function searchCSV() {
+            const searchQuery = document.getElementById('searchQuery').value.toLowerCase().trim();
+            
+            // 검색어가 비어있으면 검색을 수행하지 않고 로그 메시지 표시
+            if (!searchQuery) {
+                document.getElementById('results').innerHTML = '';
+                document.getElementById('log').textContent = 'Please enter a search term.';
+                return;
+            }
+
             try {
-                const searchQuery = document.getElementById('searchQuery').value.toLowerCase();
                 const csvContent = await fetchCSV();
                 const dataArray = csvToArray(csvContent);
                 const headers = dataArray[0];
