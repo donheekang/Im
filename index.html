@@ -136,7 +136,7 @@
                 const dataArray = csvToArray(csvContent);
                 const headers = dataArray[0];
                 const results = dataArray.slice(1).filter(row => row.some(cell => cell && cell.toLowerCase().includes(searchQuery)));
-                const resultsWithHeaders = [headers, ...results];
+                const resultsWithHeaders = results.length ? [headers, ...results] : [headers, ["No results found", "", "", "", "", ""]];
                 const resultsTable = arrayToTable(resultsWithHeaders);
                 const resultsContainer = document.getElementById('results');
                 resultsContainer.innerHTML = '';
