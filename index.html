@@ -136,8 +136,15 @@
                 const dataArray = csvToArray(csvContent);
                 const headers = dataArray[0];
                 const results = dataArray.slice(1).filter(row => row.some(cell => cell && cell.toLowerCase().includes(searchQuery)));
-                const resultsWithHeaders = results.length ? [headers, ...results] : [headers, ["No results found", "", "", "", "", ""]];
-                const resultsTable = arrayToTable(resultsWithHeaders);
+                
+                // 검색된 데이터가 없을 경우 "No results found" 메시지 추가
+                if (results.length === 0) {
+                    results.push(["No results found"]);
+                } else {
+                    results.unshift(headers); // 헤더 추가
+                }
+                
+                const resultsTable = arrayToTable(results);
                 const resultsContainer = document.getElementById('results');
                 resultsContainer.innerHTML = '';
                 resultsContainer.appendChild(resultsTable);
